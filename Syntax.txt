@@ -1,0 +1,18 @@
+program = "start" compound_statement "end"
+compoundStatement = (declarationStatement | arrayDeclarationStatement | statement) ";" [compoundStatement]
+declarationStatement = ("const" | "let") identifier ":" primitiveType ["=" expression]
+primitiveType = "int" | "char" | "string"
+constantValue = int_no | character | string
+arrayDeclarationStatement = ("const" | "let") identifier ":" primitiveType "[" int_no "]"
+statement = assignmentStatement | ioStatement | ifStatement | whileStatement
+assignmentStatement = identifier "=" expression
+ioStatement = readStatement | writeStatement
+readStatement = read "(" identifier ")"
+writeStatement = write "(" identifier ")"
+term = factor [("*" | "/") term]
+expression = term [("+" | "-") expression]
+factor = int_no | identifier | "(" expression ")"
+ifStatement = "check" "(" condition ")" "{" compound_statement "}" ["else" "{" compoundStatement "}"]
+whileStatement = "while" "(" condition ")" "{" compoundStatement "}"
+condition = expression relationOperator expression
+relationalOperator =  "<" | ">" | "<=" | ">=" | "==" | "===" | "!=" | "&&" | "||" | "<>"
