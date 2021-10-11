@@ -1,29 +1,29 @@
-Lexic.txt
-Alphabet:
-a. Upper (A-Z) and lower case letters (a-z) of the English alphabet b. Underline character '_';
-c. Decimal digits (0-9);
+    Lexic.txt
+    Alphabet:
+    a. Upper (A-Z) and lower case letters (a-z) of the English alphabet b. Underline character '_';
+    c. Decimal digits (0-9);
 
-Lexic:
-a. Special symbols, representing:
-- operators: + - * / = < > <= >= == != && ||
-- separators: [ ] { } ; : space
-- reserved words: start end const let int array char string read write check then else while exit
+    Lexic:
+    a. Special symbols, representing:
+    - operators: + - * / = < > <= >= == != && ||
+    - separators: [ ] { } ; : space
+    - reserved words: start end const let int array char string read write check then else while exit
 
-b. Identifiers = a sequence of letters and digits s.t. the first character is a letter
-identifier = letter | letter {digit | letter}
-letter = "a" | "b" | ... | "z" | "A" | "B" | ... | "Z" digit = "0" | "1" | ... | "9"
+    b. Identifiers = a sequence of letters and digits s.t. the first character is a letter
+    identifier = letter | letter {digit | letter}
+    letter = "a" | "b" | ... | "z" | "A" | "B" | ... | "Z" digit = "0" | "1" | ... | "9"
 
-c. Constants
+    c. Constants
 
--integer:
-int_no = ([("+" | "-")] non_zero_digit {digits}) | digit
-digit = "0" | "1" | ... | "9"
-non_zero_digit = "1" | ... | "9"
+    -integer:
+    int_no = ([("+" | "-")] non_zero_digit {digits}) | digit
+    digit = "0" | "1" | ... | "9"
+    non_zero_digit = "1" | ... | "9"
 
-- character:
-character = 'letter'|'digit'|'symbol'
-symbol = ":" | ";" | "?" | "!" | "."
+    - character:
+    character = 'letter'|'digit'|'symbol'
+    symbol = ":" | ";" | "?" | "!" | "."
 
-- string
-string = "character_for_string{character_for_string}"
-character_for_string = letter | digit | symbol
+    - string
+    string = "character_for_string{character_for_string}"
+    character_for_string = letter | digit | symbol
