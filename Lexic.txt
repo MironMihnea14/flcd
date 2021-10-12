@@ -1,7 +1,8 @@
     Lexic.txt
     Alphabet:
-    a. Upper (A-Z) and lower case letters (a-z) of the English alphabet b. Underline character '_';
-    c. Decimal digits (0-9);
+    a. Upper (A-Z) and lower case letters (a-z) of the English alphabet
+    b. Decimal digits (0-9);
+    c. Underline character '_';
 
     Lexic:
     a. Special symbols, representing:
@@ -15,15 +16,18 @@
 
     c. Constants
 
+    -boolean:
+    bool = "true" | "false"
+
     -integer:
-    int_no = ([("+" | "-")] non_zero_digit {digits}) | digit
+    int = ([("+" | "-")] nonZeroDigit {digits}) | digit
     digit = "0" | "1" | ... | "9"
-    non_zero_digit = "1" | ... | "9"
+    nonZeroDigit = "1" | ... | "9"
 
     - character:
     character = 'letter'|'digit'|'symbol'
     symbol = ":" | ";" | "?" | "!" | "."
 
     - string
-    string = "character_for_string{character_for_string}"
-    character_for_string = letter | digit | symbol
+    string = "characterForString{characterForString}"
+    characterForString = letter | digit | symbol
