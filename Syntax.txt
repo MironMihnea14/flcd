@@ -1,3 +1,5 @@
+    Syntax.txt
+
     program = "start" compoundStatement "end"
     compoundStatement = (declarationStatement | arrayDeclarationStatement | statement) ";" [compoundStatement]
     declarationStatement = ("const" | "let") identifier ":" primitiveType ["=" expression]

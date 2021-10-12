@@ -1,4 +1,6 @@
     Lexic.txt
+
+
     Alphabet:
     a. Upper (A-Z) and lower case letters (a-z) of the English alphabet
     b. Decimal digits (0-9);

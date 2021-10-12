@@ -1,0 +1,66 @@
+Lab1
+
+P1. Check if the sum of 2 numbers is even.
+
+Start
+	Const a: int = read().asInteger();
+	Const b: int = read().asInteger();
+
+	Const sum: int = a + b;
+
+	Check (sum % 2 == 0)
+		write(‘even’);
+	Else
+		write(‘odd’);
+End
+
+P2. Check if a number is prime
+Start
+	Const n: int = read().asInteger();
+	Let I: int;
+
+	check(n == 2) {
+		write(‘prime’);
+	}
+
+	For (i = 3; i * i < n; i++ ) {
+		check (n % i == 0) {
+			write(‘notPrime);
+			break;
+		}
+	}
+End
+P3. Find the min and max of an array.
+Start
+	Const array: int[] = [13, 14, 15, 11, 10, -1, 7, 10, 21, -3]
+
+	let min: int = array[0];
+	let max: int = array[0];
+
+	array.forEach( item => {
+		check (item > max) max = item;
+		check (item < min) min = item;
+	})
+
+	write(’the minimum element of the array is: ’, min);
+	write(’the maximum element of the array is: ’, max);
+End
+P3err. Find the min and max of an array. (2 types of Lexical Errors)
+Start
+	// Error 1 // Variables should not contain any special characters
+	Const @rr@y: int[] = [13, 14, 15, 11, 10, -1, 7, 10, 21, -3];
+
+	let min: int = @rr@y[0];
+	let max: int = @rr@y[0];
+
+	@rr@y.forEach( item => {
+		check (item > max) max = item;
+		check (item < min) min = item;
+	})
+
+	// Error 2 // string is not supposed to have spaces
+	write(’m i n:’, min);
+	write(’max:’, max);
+End
+
+
