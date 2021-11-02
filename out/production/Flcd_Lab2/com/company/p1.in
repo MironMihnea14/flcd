@@ -1,0 +1,10 @@
+Start
+const a: int = read();
+const b: int = read();
+const sum: int = a + b;
+    check (sum % 2 == 0) {
+	write("even");
+    } else {
+	write("odd");
+    }
+End

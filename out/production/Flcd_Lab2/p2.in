@@ -1,0 +1,15 @@
+Start
+	const n: int = read();
+	let I: int;
+
+	check(n == 2) {
+		write("prime");
+	}
+
+	for (i = 3; i * i < n; i = i + 1 ) {
+		check (n % i == 0) {
+			write("notPrime");
+			break;
+		}
+	}
+End
