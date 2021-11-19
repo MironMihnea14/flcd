@@ -1,0 +1,35 @@
+p q r s
+0 1 2 3 4 5 6 7 8 9 + -
+p
+q s
+p 0 q
+p + r
+p - r
+p 1 s
+p 2 s
+p 3 s
+p 4 s
+p 5 s
+p 6 s
+p 7 s
+p 8 s
+p 9 s
+r 1 s
+r 2 s
+r 3 s
+r 4 s
+r 5 s
+r 6 s
+r 7 s
+r 8 s
+r 9 s
+s 0 s
+s 1 s
+s 2 s
+s 3 s
+s 4 s
+s 5 s
+s 6 s
+s 7 s
+s 8 s
+s 9 s

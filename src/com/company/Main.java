@@ -162,9 +162,12 @@ class MyScanner {
     }
 
     private boolean isIdentifier(String token) {
-        Pattern identifier = Pattern.compile("[_a-zA-Z][_a-zA-Z0-9]*");
-        Matcher match = identifier.matcher(token);
-        return match.matches();
+//        Pattern identifier = Pattern.compile("[_a-zA-Z][_a-zA-Z0-9]*");
+//        Matcher match = identifier.matcher(token);
+//        return match.matches();
+
+        FiniteAutomata fa = new FiniteAutomata("/Users/newuser/IdeaProjects/Flcd_Lab2/src/Identifier.in");
+        return  fa.checkSequence(token);
     }
 
     private boolean isConstant(String token) {
@@ -176,10 +179,13 @@ class MyScanner {
     }
 
     private boolean isInteger(String token) {
-        String regexExpression = "0|(-?[1-9][0-9]*)";
-        Pattern identifier = Pattern.compile(regexExpression);
-        Matcher match = identifier.matcher(token);
-        return match.matches();
+//        String regexExpression = "0|(-?[1-9][0-9]*)";
+//        Pattern identifier = Pattern.compile(regexExpression);
+//        Matcher match = identifier.matcher(token);
+//        return match.matches();
+
+        FiniteAutomata fa = new FiniteAutomata("/Users/newuser/IdeaProjects/Flcd_Lab2/src/FaInteger.in");
+        return  fa.checkSequence(token);
     }
 
     private boolean isString(String token) {
@@ -258,62 +264,224 @@ class MyScanner {
     }
 }
 
+class MyOtherTuple {
+    private final String first;
+    private final String second;
+
+    public String getFirst() {
+        return this.first;
+    }
+
+    public String getSecond() {
+        return this.second;
+    }
+
+    public MyOtherTuple(String first, String second)
+    {
+        this.first = first;
+        this.second = second;
+    }
+
+    @Override
+    public int hashCode() {
+        return 42069;
+    }
+
+    @Override
+    public String toString()
+    {
+        return "(" + this.first + ", " + this.second + ")";
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if(! (o instanceof MyOtherTuple myOtherTuple))
+            return false;
+
+        return (myOtherTuple.getFirst().equals(this.first) && myOtherTuple.getSecond().equals(this.second));
+    }
+}
+
 class FiniteAutomata {
-    private final String inputFile;
-    private List<String> setOfStates = new ArrayList<>();
-    private List<String> alphabet = new ArrayList<>();
-    private List<String> transitions = new ArrayList<>();
-    private List<String> finalStates = new ArrayList<>();
 
-    public FiniteAutomata(String inputFile) {
-        this.inputFile = inputFile;
+    public List<String> states, alphabet, finalStates;
+
+    public String initialState;
+
+    public Map<MyOtherTuple,List<String>> transitions;
+
+    public FiniteAutomata(String filename)
+    {
+        this.states = new ArrayList<>();
+
+        this.alphabet = new ArrayList<>();
+
+        this.finalStates = new ArrayList<>();
+
+        this.transitions = new HashMap<>();
+
+        readElements(filename);
     }
 
-    public void readFromFile() throws FileNotFoundException {
-        File prg = new File(this.inputFile);
-        Scanner reader = new Scanner(prg);
-        int lineCount = 0;
-        while (reader.hasNextLine()) {
-            if (lineCount == 0) {
-                setOfStates = Arrays.asList(reader.nextLine().split(","));
-            } else if (lineCount == 1) {
-                alphabet = Arrays.asList(reader.nextLine().split(","));
-            } else if (lineCount == 2) {
-                transitions = Arrays.asList(reader.nextLine().split(","));
-            } else if (lineCount == 3) {
-                finalStates = Arrays.asList(reader.nextLine().split(","));
+    public void readElements(String filename)  {
+
+        try {
+            File file = new File(filename);
+            Scanner reader = new Scanner(file);
+
+            String statesLine = reader.nextLine();
+            this.states = Arrays.asList(statesLine.split(" "));
+
+            String alphabetLine = reader.nextLine();
+            this.alphabet = Arrays.asList(alphabetLine.split(" "));
+
+            this.initialState = reader.nextLine();
+
+            String finalStatesLine = reader.nextLine();
+
+            this.finalStates = Arrays.asList(finalStatesLine.split(" "));
+
+            while(reader.hasNextLine())
+            {
+                String[] transition = reader.nextLine().split(" ");
+                MyOtherTuple newPair = new MyOtherTuple(transition[0],transition[1]);
+
+                if(this.transitions.containsKey(newPair))
+                {
+                    if(!this.transitions.get(newPair).contains(transition[2]))
+                        this.transitions.get(newPair).add(transition[2]);
+                }
+                else {
+                    this.transitions.put(new MyOtherTuple(transition[0], transition[1]), new ArrayList<>(Collections.singletonList(transition[2])));
+                };
             }
-            lineCount++;
+
+
         }
-        reader.close();
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
-
-    public List<String> getSetOfStates() {
-        return setOfStates;
+    public boolean isDeterministic()
+    {
+        for(MyOtherTuple key: this.transitions.keySet())
+        {
+            if(this.transitions.get(key).size() > 1)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public List<String> getAlphabet() {
-        return alphabet;
+    public boolean checkSequence(String sequence){
+        if(!isDeterministic())
+        {
+            return false;
+        }
+        else{
+            String currentState = this.initialState;
+            for(char c: sequence.toCharArray())
+            {
+                MyOtherTuple myTuple = new MyOtherTuple(currentState,String.valueOf(c));
+                if(this.transitions.containsKey(myTuple))
+                {
+                    currentState = this.transitions.get(myTuple).get(0);
+                }
+                else {return false;}
+            }
+
+            return this.finalStates.contains(currentState);
+        }
+    }
+    public String getStates() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("States: ------>");
+        for(String s: this.states)
+        {
+            stringBuilder.append(s).append(" ");
+        }
+        return stringBuilder.toString();
     }
 
-    public List<String> getTransitions() {
-        return transitions;
+    public String getAlphabet() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("Alphabet: ------>");
+        for(String s: this.alphabet)
+        {
+            stringBuilder.append(s).append(" ");
+        }
+        return stringBuilder.toString();
     }
 
-    public List<String> getFinalStates() {
-        return finalStates;
+    public String getFinalStates() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("Final States: ------> ");
+        for(String s: this.finalStates)
+        {
+            stringBuilder.append(s).append(" ");
+        }
+        return stringBuilder.toString();
+    }
+
+    public String getTransition() {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("Transitions: ------>: ");
+        for(var s: this.transitions.entrySet())
+        {
+            stringBuilder.append(s.getKey()).append("->");
+            stringBuilder.append(s.getValue());
+        }
+        return stringBuilder.toString();
     }
 }
 
 public class Main {
     public static void main(String[] args) {
 //        MyScanner myScanner = new MyScanner("/Users/newuser/IdeaProjects/Flcd_Lab2/src/com/company/p1.in");
-        MyScanner myScanner = new MyScanner("/Users/newuser/IdeaProjects/Flcd_Lab2/src/p2.in");
-        try {
-            myScanner.scan();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
+//        MyScanner myScanner = new MyScanner("/Users/newuser/IdeaProjects/Flcd_Lab2/src/p2.in");
+//        try {
+//            myScanner.scan();
+//        } catch (RuntimeException e) {
+//            e.printStackTrace();
+//        }
+
+        FiniteAutomata FA = new FiniteAutomata("/Users/newuser/IdeaProjects/Flcd_Lab2/src/Identifier.in");
+        Scanner scanner = new Scanner(System.in);
+
+        boolean running = true;
+
+        while(running)
+        {
+            System.out.println("Select option: ");
+            System.out.println("1: get the states");
+            System.out.println("2: get the alphabet");
+            System.out.println("3: get the final states");
+            System.out.println("4: get the transitions");
+            System.out.println("5: check if deterministic");
+            System.out.println("5: Check a given sequence");
+            String writtenValue = scanner.nextLine();
+            switch (writtenValue) {
+                case "1" -> System.out.println(FA.getStates());
+                case "2" -> System.out.println(FA.getAlphabet());
+                case "3" -> System.out.println(FA.getFinalStates());
+                case "4" -> System.out.println(FA.getTransition());
+                case "5" -> System.out.println(FA.isDeterministic());
+                case "6" -> {
+                    System.out.println("Check sequence");
+                    String sequence = scanner.nextLine();
+
+                    System.out.println(FA.checkSequence(sequence));
+                }
+                case "0" -> running = false;
+                default -> System.out.println("Please select of the options!");
+            }
         }
     }
 }
